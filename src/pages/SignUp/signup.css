@@ -1,0 +1,6 @@
+.SignUpContainer{
+    background-color: linear-gradient(to bottom,gray,lightgray);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
