@@ -1,8 +1,19 @@
 import React from 'react'
 import "./Navbar.css"
 import { useNavigate } from 'react-router-dom'
+
 const Navbar = () => {
+  
+
   const navigate=useNavigate();
+  const user=localStorage.getItem("user");
+ // console.log(user?"yes":"no")
+ 
+  const handleLogout=()=>{
+    localStorage.removeItem("user");
+    navigate('/login')
+  }
+  
   return (
     <div className='NavbarDiv'>
       <div className='NavbarInnerDiv'>
@@ -11,8 +22,17 @@ const Navbar = () => {
       <input/>
     </div>
     <div className='NavbarRight'>
-      <button onClick={()=>navigate("/login")}>Login</button>
-      <button onClick={()=>navigate("/signup")}>Signup</button>
+   
+    {!user ? (
+            <>
+              <button onClick={() => navigate("/login")}>Login</button>
+              <button onClick={() => navigate("/signup")}>Signup</button>
+            </>
+          ) : (
+            <>
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          )}
     </div>
     </div>
     </div>

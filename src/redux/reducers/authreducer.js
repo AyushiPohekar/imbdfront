@@ -1,38 +1,20 @@
-import { LOGIN, LOGOUT, SIGNUP } from '../actions/authActions';
+import { LOGIN, LOGOUT } from "../actions/type";
 
-const initialState = {
-  isAuthenticated: false,
-  user: null,
-  loading: false,
-  error: null,
+const INITIAL_STATE = {
+  user: JSON.parse(localStorage.getItem("user") || null),
 };
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LOGIN:
       return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        loading: false,
-        error: null,
+        user: action.payload,
       };
     case LOGOUT:
       return {
-        ...state,
-        isAuthenticated: false,
         user: null,
-        loading: false,
-        error: null,
       };
-    case SIGNUP:
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        loading: false,
-        error: null,
-      };
+
     default:
       return state;
   }

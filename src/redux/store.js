@@ -1,15 +1,22 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-// Import your reducers
-import authReducer from './reducers/authreducer';
 
-// Combine your reducers
+
+import { composeWithDevTools } from '@redux-devtools/extension';
+import { moviesReducer } from './reducers/moviereducers';
+
+
 const rootReducer = combineReducers({
-  auth: authReducer,
+  movie:moviesReducer,
 });
+const middleware=[thunk]
 
-// Create the store
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
 
 export default store;
+
+
+
+
+
