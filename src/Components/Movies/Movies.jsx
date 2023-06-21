@@ -6,11 +6,11 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import "./Movies.css"
 
-const Movies = ({movie,movieId}) => {
-  const [show, setShow] = useState(true);
-  const parastyles = {
-    display: show ? "block" : "none",
-  };
+const Movies = ({movie,movieId,deletebutton}) => {
+ 
+  //console.log(movieId)
+  const [show, setShow] = useState(false);
+ 
 
   const navigate=useNavigate();
 
@@ -18,20 +18,20 @@ const Movies = ({movie,movieId}) => {
     color: movie.vote_average > 8 ? "green" : "red",
   };
 
-  console.log(movie.poster_path[0])
+ // console.log(movie.poster_path[0])
   return (
     <Card className='Movie-container' sx={{height:"min-content"}}>
     <img className='Movie-poster' src={movie.poster_path} alt={movie.original_title} />
    <CardContent>
     <div className='Movie-individual'>
-      <h2 className='Movie-name'>{movie.original_title}
+      <h2 className='Movie-name'>{movie.original_title}  </h2>
       <IconButton color="primary" onClick={()=>navigate(`/movies/${movieId}`)} aria-label="Movie-Details">
    <InfoIcon />
   </IconButton>
   <IconButton color="primary" onClick={() => setShow(!show)} aria-label="Summary">
    {show?< ExpandLessIcon/> :<ExpandMoreIcon/>}
   </IconButton>
-  </h2>
+
       <p style={styles} className='Movie-rating'>&#11088;{movie.vote_average}</p></div>
     
 
@@ -42,7 +42,7 @@ const Movies = ({movie,movieId}) => {
     </CardContent>
     <CardActions>
     {/* <Counter /> {deletebutton} {editbutton} */}
-    <div>Counter delete edit</div>
+    <div> <span>{deletebutton}</span></div>
     </CardActions>
 
   </Card>

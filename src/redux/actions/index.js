@@ -1,7 +1,7 @@
 import axios from "axios";
 // import { LOGIN, LOGOUT } from "./type";
 import { API } from "../../global";
-import { FETCH_MOVIES } from "./type";
+import { DELETE_MOVIE, FETCH_MOVIES, FETCH_SINGLE_MOVIES, UPDATE_MOVIE } from "./type";
 
 // // Action creators
 // export const login = (username, password) => {
@@ -46,15 +46,52 @@ import { FETCH_MOVIES } from "./type";
 // }
 
 export const getallMovies=async(dispatch)=>{
-    console.log("function called")
+    //console.log("function called")
     try {
        const res=await axios.get(`${API}/movies`);
       
        dispatch({type:FETCH_MOVIES,payload:res.data})
-        console.log(res)
+       // console.log(res.data)
     } catch (error) {
         console.log(`Error while getting movies`,error.message);
     }
     
 
+}
+export const getallMoviesById=(movieId)=>async(dispatch)=>{
+   //console.log("insidefunction",movieId)
+    try {
+       const res=await axios.get(`${API}/movies/${movieId}`);
+      
+       dispatch({type:FETCH_SINGLE_MOVIES,payload:res.data})
+        console.log(res.data)
+    } catch (error) {
+        console.log(`Error while getting movies`,error.message);
+    }
+    
+
+}
+export const deleteMovie=(movieId)=>async(dispatch)=>{
+  console.log("deletefunction called")
+    try {
+       const res=await axios.delete(`${API}/movies/${movieId}`);
+      
+       dispatch({type:DELETE_MOVIE,payload:res.data.movie})
+       console.log("delete",res.data)
+    } catch (error) {
+        console.log(`Error while getting movies`,error.message);
+    }
+    
+
+}
+
+export const updateMovie =(movieId,data)=>async(dispatch)=>{
+    try {
+       const res=await axios.put(`${API}/movies/${movieId}`,{data});
+      //  console.log(data)
+        dispatch({type:UPDATE_MOVIE,payload:res.data})
+       // console.log(res.data)
+    } catch (error) {
+        console.log(`Error while calling addnewTodoApi`,error.message);
+    }
 }

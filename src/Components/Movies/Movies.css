@@ -4,7 +4,7 @@
  .Movie-container {
     width: 340px;
     margin-top: 10px;
-
+ 
    
   }
   
@@ -43,8 +43,9 @@
     font-weight: bold;
   } */
   .Movie-name{
-    font-size: 24px;
+    font-size: 18px;
     margin:0;
+    
     /* color:black; */
   }
   
@@ -58,3 +59,66 @@
   .Movie-rating{
     font-size: 18px;
   }
+
+
+/* Movie Detail Container */
+
+
+.MovieDetailContainer{
+   margin: 5rem auto;
+   width: 80%;
+   height: auto;
+   background: linear-gradient(to right,#232526,#414345);
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+   padding: 2rem;
+  
+}
+.Detail_firstDiv{
+    color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.MovieDetailPoster{
+    height: 640px;
+    width: 340px;
+    object-fit: cover;
+    
+}
+.genreDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: white;
+}
+
+.generes{
+    display: flex;
+    flex-direction: row;
+   
+   
+ 
+}
+.genere{
+    margin-right: 1rem;
+    padding: 5px 10px;
+    border: 0.5px solid rgb(251, 244, 244);
+    border-radius: 20px;
+}
+.MovieDetailOverview{
+   
+}
+.MovieDetailActor{
+ display: flex;
+ flex-direction: row;
+ gap:1rem;
+}
+.actorNames{
+    color: rgb(151, 151, 235);
+    display: flex;
+    flex-direction: row;
+  }
+
+
