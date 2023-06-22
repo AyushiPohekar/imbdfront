@@ -44,6 +44,10 @@ import { DELETE_MOVIE, FETCH_MOVIES, FETCH_SINGLE_MOVIES, UPDATE_MOVIE } from ".
   
 
 // }
+let auth=localStorage.getItem("auth")
+let authuser=JSON.parse(auth)
+let token=authuser?.token ;
+console.log(token)
 
 export const getallMovies=async(dispatch)=>{
     //console.log("function called")
@@ -72,9 +76,13 @@ export const getallMoviesById=(movieId)=>async(dispatch)=>{
 
 }
 export const deleteMovie=(movieId)=>async(dispatch)=>{
-  console.log("deletefunction called")
+
     try {
-       const res=await axios.delete(`${API}/movies/${movieId}`);
+       const res=await axios.delete(`${API}/movies/${movieId}`,{
+        headers: {
+          Authorization:token,
+        },
+      });
       
        dispatch({type:DELETE_MOVIE,payload:res.data.movie})
        console.log("delete",res.data)
@@ -87,7 +95,11 @@ export const deleteMovie=(movieId)=>async(dispatch)=>{
 
 export const updateMovie =(movieId,data)=>async(dispatch)=>{
     try {
-       const res=await axios.put(`${API}/movies/${movieId}`,{data});
+       const res=await axios.put(`${API}/movies/${movieId}`,{data},{
+        headers: {
+          Authorization:token,
+        },
+      });
       //  console.log(data)
         dispatch({type:UPDATE_MOVIE,payload:res.data})
        // console.log(res.data)
@@ -95,3 +107,4 @@ export const updateMovie =(movieId,data)=>async(dispatch)=>{
         console.log(`Error while calling addnewTodoApi`,error.message);
     }
 }
+

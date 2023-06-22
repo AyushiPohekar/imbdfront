@@ -6,11 +6,11 @@ const Navbar = () => {
   
 
   const navigate=useNavigate();
-  const user=localStorage.getItem("user");
+  const auth=localStorage.getItem("auth");
  // console.log(user?"yes":"no")
  
   const handleLogout=()=>{
-    localStorage.removeItem("user");
+    localStorage.removeItem("auth");
     navigate('/login')
   }
   
@@ -23,7 +23,7 @@ const Navbar = () => {
     </div>
     <div className='NavbarRight'>
    
-    {!user ? (
+    {!auth ? (
             <>
               <button onClick={() => navigate("/login")}>Login</button>
               <button onClick={() => navigate("/signup")}>Signup</button>
@@ -31,6 +31,7 @@ const Navbar = () => {
           ) : (
             <>
               <button onClick={handleLogout}>Logout</button>
+              <button onClick={()=>navigate("/addmovie")}>Add Movie</button>
             </>
           )}
     </div>

@@ -4,9 +4,10 @@ import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
-import { Movie } from '@mui/icons-material';
+
 import MovieDetails from './Components/Movies/MovieDetails';
 import EditMovie from './Components/Movies/EditMovie';
+import AddMovie from './Components/Movies/AddMovie';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/movies/edit/:movieId" element={<EditMovie/>} />
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<SignUp/>}/>
+      <Route path="/addmovie" element={<AddMovie/>}/>
      </Routes>
     </div>
   );

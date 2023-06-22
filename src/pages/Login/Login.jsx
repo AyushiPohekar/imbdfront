@@ -7,6 +7,17 @@ import { API } from "../../global";
 import axios from "axios";
 
 const Login = () => {
+
+  const [auth, setAuth] = useState({
+    user: null,
+    token: "",
+  });
+
+
+
+
+
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     password: "",
@@ -29,8 +40,17 @@ const Login = () => {
     try {
       //console.log("data",{data})
       const res = await axios.post(`${API}/auth/login`, data);
+   
       if (res && res.status === 200) {
-        localStorage.setItem("user", JSON.stringify(res.data.user))
+       //toast.success(res.data && res.data.message);
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token,
+        });
+        localStorage.setItem('auth',JSON.stringify(res.data))
+        // localStorage.setItem(auth,res.data)
+        // console.log(typeof(res.data))
         navigate("/");
       } else {
         console.log(res.data.message);

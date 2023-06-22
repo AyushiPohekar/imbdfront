@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const user=localStorage.getItem("user")
+  const auth=localStorage.getItem("auth")
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const HomePage = () => {
   console.log(allMovies);
 
   const handleDelete=(movieId)=>{
-    if(user){
+    if(auth){
       dispatch(deleteMovie(movieId));
       //window.location.reload();
     }
