@@ -12,7 +12,7 @@ const AddMovie = () => {
   const [releaseDate, setreleaseDate] = useState("");
   const [vote_average, setvote_average] = useState();
   const [existingActors, setExistingActors] = useState([]);
-  const [selectedActor, setSelectedActor] = useState({});
+  const [selectedActor, setSelectedActor] = useState(null);
   const [actorName, setActorName] = useState("");
   const [actorGender, setActorGender] = useState("");
   const [actorDOB, setActorDOB] = useState("");
@@ -24,7 +24,7 @@ const AddMovie = () => {
   const [actors, setActors] = useState([]);
   const [producer, setproducer] = useState([]);
   const [existingproducer, setExistingproducer] = useState(null);
-  const [selectedProducer, setSelectedproducer] = useState("");
+  const [selectedProducer, setSelectedproducer] = useState({});
   let selectedActor1={};
 
 
@@ -73,7 +73,7 @@ const[status,setstatus]=useState("")
         status,
         vote_average,
         actors,
-        producer,
+      producer,
 
         // Include other movie fields here
       };
@@ -155,6 +155,40 @@ const[status,setstatus]=useState("")
   //   }
   // };
   // Define a useEffect hook outside of the component
+// useEffect(() => {
+//   if (selectedActor) {
+//     const newActor = {
+//       name: selectedActor.name,
+//       gender: selectedActor.gender,
+//       dob: selectedActor.dob,
+//       bio: selectedActor.bio,
+//     };
+//     setActors([...actors, newActor]);
+//     console.log("selectedActor", selectedActor);
+//   }
+// }, [selectedActor]);
+
+
+// const handleSelectedActorChange = (event) => {
+//   const selectedActorId = event.target.value;
+//   console.log("selectedActorId", selectedActorId);
+
+//   if (selectedActorId) {
+//     console.log("insidehandleselectactor");
+
+//     const selectedActor1 = existingActors.find(
+//       (actor) => actor._id === selectedActorId
+//     );
+//     console.log("selectedActor1", selectedActor1);
+
+//     setSelectedActor(selectedActor1);
+    
+//   } else {
+//     console.log("hello else");
+//     // Reset the selected actor in the component state
+//     setSelectedActor(null);
+//   }
+// };
 useEffect(() => {
   if (selectedActor) {
     const newActor = {
@@ -167,69 +201,108 @@ useEffect(() => {
   }
 }, [selectedActor]);
 
-// The handleSelectedActorChange function remains the same
 const handleSelectedActorChange = (event) => {
   const selectedActorId = event.target.value;
-  console.log("selectedActorId", selectedActorId);
-
   if (selectedActorId) {
-    console.log("insidehandleselectactor");
-
-    const selectedActor1 = existingActors.find(
+    const selectedActor = existingActors.find(
       (actor) => actor._id === selectedActorId
     );
-    console.log("selectedActor1", selectedActor1);
-
-    setSelectedActor(selectedActor1);
-    console.log("selectedActor", selectedActor1);
+    setSelectedActor(selectedActor);
   } else {
-    console.log("hello else");
-    // Reset the selected actor in the component state
     setSelectedActor(null);
   }
 };
-
   let flag = 0;
 
-  const handleSelectedProducerChange = (event) => {
-    if (flag == 1) {
-      const selectedProducerId = event.target.value;
-      if (selectedProducerId) {
-        // Find the selected actor from the existingActors array
-        const selectedProducer1 = existingproducer.find(
-          (producer) => producer._id === selectedProducerId
-        );
   
-        // Set the selected actor in the component state
-        setSelectedproducer(selectedProducer1);
-        console.log(selectedProducer)
-        const producer1 = {
-          name: selectedProducer.name,
-          gender: selectedProducer.gender,
-          dob: selectedProducer.dob,
-          bio: selectedProducer.bio,
-        };
-        setproducer(producer1);
-      } else {
-        const producer1 = {
-          name: actorName,
-          gender: actorGender,
-          dob: actorDOB.toString(),
-          bio: actorBio,
-        };
-        setproducer(producer1);
-      }
+
+  // useEffect(() => {
+  //   if (selectedProducer) {
+  //     // Set the producer state based on the selected producer's values
+  //     const producerData = {
+  //       name: selectedProducer.name,
+  //       gender: selectedProducer.gender,
+  //       dob: selectedProducer.dob,
+  //       bio: selectedProducer.bio,
+  //     };
+      
+  //     setproducer(producerData);
+  
+  //     console.log("selectedProducer", selectedProducer);
+  //   } else {
+  //     // Reset the producer state when no producer is selected
+  //     setproducer({});
+  //   }
+  // }, [selectedProducer]);
+  
+  // const handleSelectedProducerChange = (event) => {
+  //   const selectedProducerId = event.target.value;
+  //   if (selectedProducerId) {
+  //     const selectedProducer1 = existingproducer.find(
+  //       (producer) => producer._id === selectedProducerId
+  //     );
+  
+  //     setSelectedproducer(selectedProducer1);
+  //   } else {
+  //     setSelectedproducer(null);
+  //   }
+  // };
+ 
+  useEffect(() => {
+    if (selectedProducer) {
+      const producerDOB = new Date(selectedProducer.dob);
+
+      setProducerName(selectedProducer.name);
+      setProducerGender(selectedProducer.gender);
+      setProducerDOB(producerDOB);
+      setProducerBio(selectedProducer.bio);
+    } else {
+      setProducerName('');
+      setProducerGender('');
+      setProducerDOB('');
+      setProducerBio('');
+    }
+    setproducer(selectedProducer)
+  }, [selectedProducer]);
+
+  const handleExistingProducer = (event) => {
+    const selectedProducerId = event.target.value;
+    if (selectedProducerId) {
+      const selectedProducer = existingproducer.find(
+        (producer) => producer._id === selectedProducerId
+      );
+      setSelectedproducer(selectedProducer);
+      
+    } else {
+      setSelectedproducer(null);
     }
   };
 
-  const handleExistingProducer = (e) => {
-    flag = 1;
-    handleSelectedProducerChange(e);
+  const handleNewProducer = (event) => {
+    event.preventDefault();
+    if (!producerName || !producerGender || !producerDOB || !producerBio) {
+      alert('Please fill in all the fields for the new producer.');
+      return;
+    }
+
+    if (selectedProducer) {
+      alert('Only one producer can be added.');
+      return;
+    }
+
+    const newProducer = {
+      name: producerName,
+      gender: producerGender,
+      dob: producerDOB.toString(),
+      bio: producerBio,
+    };
+
+    setSelectedproducer(newProducer);
+    setproducer(selectedProducer)
   };
-  const handleNewProducer = (e) => {
-    flag = 0;
-    handleSelectedProducerChange(e);
-  };
+console.log("SelectedProducer:",selectedProducer)
+console.log("producer",producer)
+  // const isProducerInputDisabled = selectedProducer
 
   return (
     <form
@@ -402,11 +475,22 @@ const handleSelectedActorChange = (event) => {
       </ul>
 
       <h3>Add Producer</h3>
-      <select value={selectedProducer} onChange={handleExistingProducer}>
+      <select value={selectedProducer?._id} onChange={handleExistingProducer}>
         <option value="">Select Existing Producer</option>
         {existingproducer?.map((producer) => (
           <option key={producer?._id} value={producer?._id}>
             {producer?.name}
+          </option>
+        ))}
+      </select>
+
+      <h3>Or</h3>
+      <h3>Add Producer</h3>
+      <select value={selectedProducer?._id} onChange={handleExistingProducer}>
+        <option value="">Select Existing Producer</option>
+        {existingproducer?.map((producer) => (
+          <option key={producer._id} value={producer._id}>
+            {producer.name}
           </option>
         ))}
       </select>
@@ -419,7 +503,6 @@ const handleSelectedActorChange = (event) => {
         <input
           type="text"
           id="producerName"
-          disabled={flag == 1}
           value={producerName}
           onChange={(event) => setProducerName(event.target.value)}
         />
@@ -428,7 +511,6 @@ const handleSelectedActorChange = (event) => {
         <input
           type="text"
           id="producerGender"
-          disabled={flag == 1}
           value={producerGender}
           onChange={(event) => setProducerGender(event.target.value)}
         />
@@ -437,15 +519,13 @@ const handleSelectedActorChange = (event) => {
         <input
           type="date"
           id="producerDOB"
-          disabled={flag == 1}
           value={producerDOB}
           onChange={(event) => setProducerDOB(event.target.value)}
         />
 
-        <label htmlFor="actorBio">Bio:</label>
+        <label htmlFor="producerBio">Bio:</label>
         <textarea
           id="producerBio"
-          disabled={flag == 1}
           value={producerBio}
           onChange={(event) => setProducerBio(event.target.value)}
         ></textarea>
