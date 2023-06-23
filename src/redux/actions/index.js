@@ -1,7 +1,7 @@
 import axios from "axios";
 // import { LOGIN, LOGOUT } from "./type";
 import { API } from "../../global";
-import { DELETE_MOVIE, FETCH_MOVIES, FETCH_SINGLE_MOVIES, UPDATE_MOVIE } from "./type";
+import { CREATE_MOVIE, DELETE_MOVIE, FETCH_MOVIES, FETCH_SINGLE_MOVIES, GET_ACTORS, GET_PRODUCERS, GET_SINGLEACTOR, GET_SINGLEPRODUCER, UPDATE_MOVIE } from "./type";
 
 // // Action creators
 // export const login = (username, password) => {
@@ -108,3 +108,88 @@ export const updateMovie =(movieId,data)=>async(dispatch)=>{
     }
 }
 
+export const addnewMovie=(data)=>async(dispatch)=>{
+    console.log("calling addnewmovie")
+    try {
+       const res=await axios.post(`${API}/movies`,{data},{
+        headers: {
+          Authorization:token,
+        },
+      });
+         console.log("res.data",res.data.message)
+        dispatch({type:CREATE_MOVIE,payload:res.data})
+        
+    } catch (error) {
+        console.log(`Error while calling addnewTodoApi`,error.message);
+    }
+    
+
+}
+
+
+//Actors
+
+//get All Actors
+export const getallActors=async(dispatch)=>{
+    //console.log("function called")
+    try {
+       const res=await axios.get(`${API}/actors`);
+      
+       dispatch({type:GET_ACTORS,payload:res.data})
+     console.log(res.data)
+    } catch (error) {
+        console.log(`Error while getting actors`,error.message);
+    }
+    
+
+}
+
+//get Actors by Id
+
+export const getActorsById=(id)=>async(dispatch)=>{
+    //console.log("insidefunction",movieId)
+     try {
+        const res=await axios.get(`${API}/actors/${id}`);
+       
+        dispatch({type:GET_SINGLEACTOR,payload:res.data})
+         console.log(res.data)
+     } catch (error) {
+         console.log(`Error while getting movies`,error.message);
+     }
+     
+ 
+ }
+
+
+
+
+
+
+//get All Producers
+export const getallProducers=async(dispatch)=>{
+    //console.log("function called")
+    try {
+       const res=await axios.get(`${API}/producers`);
+      
+       dispatch({type:GET_PRODUCERS,payload:res.data})
+     console.log(res.data)
+    } catch (error) {
+        console.log(`Error while getting producers`,error.message);
+    }
+    
+
+}
+
+export const getProducersById=(id)=>async(dispatch)=>{
+    //console.log("insidefunction",movieId)
+     try {
+        const res=await axios.get(`${API}/producers/${id}`);
+       
+        dispatch({type:GET_SINGLEPRODUCER,payload:res.data})
+         console.log(res.data)
+     } catch (error) {
+         console.log(`Error while getting movies`,error.message);
+     }
+     
+ 
+ }

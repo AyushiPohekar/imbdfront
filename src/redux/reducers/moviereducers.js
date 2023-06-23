@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/type";
 
-export const moviesReducer = (state = {}, action) => {
+export const moviesReducer = (state = [], action) => {
   switch (action.type) {
     case actionTypes.FETCH_MOVIES:
       return action.payload;
@@ -11,6 +11,8 @@ export const moviesReducer = (state = {}, action) => {
         ...state,
         selectedMovie,
       };
+      case actionTypes.CREATE_MOVIE:
+        return [action.payload, ...state]
     // case actionTypes.UPDATE_TODO:
     // return state.map(todo => (
     //     todo._id === action.payload._id ? { ...todo, data: action.payload.data } : todo

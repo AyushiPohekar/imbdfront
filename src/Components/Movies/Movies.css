@@ -1,124 +1,107 @@
- 
+.Movie-container {
+  width: 340px;
+  margin-top: 10px;
+}
 
- 
- .Movie-container {
-    width: 340px;
-    margin-top: 10px;
- 
-   
-  }
-  
-  .Movie-poster {
-    height: 640px;
-    width: 340px;
-    object-fit: cover;
-  }
-  
-  
-  .Movie-list {
-    display:flex;
-    flex-wrap: wrap; 
-    gap:10px;
-    justify-content: space-around;
-  }
-  .Movie-summary{
-    margin-top: 0px;
-   
-  }
-  
-  
-  .Movie-individual {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  /* .Movie-name {
-    display: block;
-    font-size: 22px;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-  } */
-  .Movie-name{
-    font-size: 18px;
-    margin:0;
-    
-    /* color:black; */
-  }
-  
-  /* .Movie-rating {
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-  } */
-  .Movie-rating{
-    font-size: 18px;
-  }
+.Movie-poster {
+  height: 640px;
+  width: 340px;
+  object-fit: cover;
+}
 
+.Movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-around;
+}
+.Movie-summary {
+  margin-top: 0px;
+  font-weight: 500;
+  text-align: justify;
+}
+
+.Movie-individual {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Movie-name {
+  font-size: 18px;
+  margin: 0;
+}
+.Movie-rating {
+  font-size: 18px;
+}
 
 /* Movie Detail Container */
 
-
-.MovieDetailContainer{
-   margin: 5rem auto;
-   width: 80%;
-   height: auto;
-   background: linear-gradient(to right,#232526,#414345);
-   display: flex;
-   flex-direction: column;
-   gap: 1rem;
-   padding: 2rem;
-  
+.MovieDetailContainer {
+  margin: 5rem auto;
+  width: 80%;
+  height: auto;
+  background: linear-gradient(to right, #232526, #414345);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
 }
-.Detail_firstDiv{
-    color: #ffffff;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.Detail_firstDiv {
+  color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-.MovieDetailPoster{
-    height: 640px;
-    width: 340px;
-    object-fit: cover;
-    
+.MovieDetailPoster {
+  height: 640px;
+  width: 340px;
+  object-fit: cover;
 }
-.genreDiv{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    color: white;
+.genreDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: white;
 }
 
-.generes{
-    display: flex;
-    flex-direction: row;
-   
-   
- 
+.generes {
+  display: flex;
+  flex-direction: row;
 }
-.genere{
-    margin-right: 1rem;
-    padding: 5px 10px;
-    border: 0.5px solid rgb(251, 244, 244);
-    border-radius: 20px;
+.genere {
+  margin-right: 1rem;
+  padding: 5px 10px;
+  border: 0.5px solid rgb(251, 244, 244);
+  border-radius: 20px;
 }
-.MovieDetailOverview{
-   
+.rating{
+  font-weight: 500;
+  color: rgb(238, 177, 10);
+  font-size: larger;
 }
-.MovieDetailActor{
- display: flex;
- flex-direction: row;
- gap:1rem;
+.MovieDetailActor {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
-.actorNames{
-    color: rgb(151, 151, 235);
-    display: flex;
-    flex-direction: row;
-  }
+.actorNames {
+  color: rgb(151, 151, 235);
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+.actorNames:hover{
+  text-decoration: underline;
+}
 
 
+/* AddMOvie */
+form{
+  margin: auto;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+}

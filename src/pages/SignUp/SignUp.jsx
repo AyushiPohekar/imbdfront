@@ -7,13 +7,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
- const navigate=useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     email: "",
   });
- 
 
   const handleOnchange = (event) => {
     const { name, value } = event.target;
@@ -22,44 +21,27 @@ const SignUp = () => {
       [name]: value,
     }));
   };
-  console.log(formData)
+  //console.log(formData);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    //dispatch(signupController(formData));
-    // const signupController=(data)=>async(dispatch)=>{
-    //   try {//console.log("data",{data})
-    //      const res=await axios.post(`${API}/auth/register`,data);
-        
-    //       dispatch({type:SIGNUP,payload:res.data})
-        
-    //   } catch (error) {
-    //       console.log(`Error while calling signupApi`,error.message);
-    //   }
-      signupController(formData);
+    signupController(formData);
   };
-  const signupController=async(data)=>{
-    try {//console.log("data",{data})
-       const res=await axios.post(`${API}/auth/register`,data);
-       if (res && res.status === 201) {
-       
+  const signupController = async (data) => {
+    try {
+      //console.log("data",{data})
+      const res = await axios.post(`${API}/auth/register`, data);
+      if (res && res.status === 201) {
         console.log(res.data.message);
         navigate("/login");
-
       } else {
         console.log(res.data.message);
       }
-      
-      
-      
     } catch (error) {
-        console.log(`Error while calling signupApi`,error.message);
+      console.log(`Error while calling signupApi`, error.message);
     }
-  }
-    
+  };
 
-  // const state = useSelector((state) => state);
-// console.log(state)
   return (
     <div className="LoginDiv">
       <Navbar />
@@ -97,6 +79,10 @@ const SignUp = () => {
           </div>
 
           <button onClick={onSubmitHandler}>Submit</button>
+          <p>
+            Already have an account?Click to{" "}
+            <span onClick={() => navigate("/login")}>Login</span>
+          </p>
         </form>
       </div>
     </div>

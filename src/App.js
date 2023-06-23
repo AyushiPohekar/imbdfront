@@ -8,6 +8,9 @@ import HomePage from './pages/HomePage/HomePage';
 import MovieDetails from './Components/Movies/MovieDetails';
 import EditMovie from './Components/Movies/EditMovie';
 import AddMovie from './Components/Movies/AddMovie';
+import CreateMovie from './Components/Movies/CreateMovie';
+import ActorDetail from './Components/Actors/ActorDetail';
+import ProducerDetail from './Components/Producers/ProducerDetail';
 
 function App() {
   return (
@@ -18,7 +21,9 @@ function App() {
       <Route path="/movies/edit/:movieId" element={<EditMovie/>} />
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<SignUp/>}/>
-      <Route path="/addmovie" element={<AddMovie/>}/>
+      <Route path="/addmovie" element={<CreateMovie/>}/>
+      <Route path="/actordetail" element={<ActorDetail/>}/>
+      <Route path="/producerdetail" element={<ProducerDetail/>}/>
      </Routes>
     </div>
   );

@@ -1,7 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { API } from "../../global";
-
+import {
+  addnewMovie,
+  getallActors,
+  getallProducers,
+} from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import "./Movies.css";
+import Navbar from "../Navbar/Navbar";
 const AddMovie = () => {
   const [genres, setGenres] = useState([]);
   const [genreList, setGenreList] = useState([]);
@@ -25,39 +32,16 @@ const AddMovie = () => {
   const [producer, setproducer] = useState([]);
   const [existingproducer, setExistingproducer] = useState(null);
   const [selectedProducer, setSelectedproducer] = useState({});
-  let selectedActor1={};
+  let selectedActor1 = {};
 
-
-const[status,setstatus]=useState("")
-  useEffect(() => {
-    fetchActors();
-    fetchProducers();
-    //console.log("inside useEffect")
-  }, []);
+  const [status, setstatus] = useState("");
 
   let auth = localStorage.getItem("auth");
   let authuser = JSON.parse(auth);
   let token = authuser?.token;
+  const dispatch = useDispatch();
 
-  const fetchActors = async () => {
-    try {
-      const response = await axios.get(`${API}/actors`);
-      setExistingActors(response?.data?.actors);
-    } catch (error) {
-      console.log("Error:", error.message);
-    }
-  };
-  const fetchProducers = async () => {
-    try {
-      const response = await axios.get(`${API}/producers`);
-      setExistingproducer(response?.data?.producers);
-      console.log(existingproducer);
-    } catch (error) {
-      console.log("Error:", error.message);
-    }
-  };
-
-  console.log("selectedActor:", typeof selectedActor);
+  //console.log("selectedActor:", typeof selectedActor);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,25 +57,11 @@ const[status,setstatus]=useState("")
         status,
         vote_average,
         actors,
-      producer,
-
-        // Include other movie fields here
+        producer,
       };
-      console.log(formData)
-      const response = await axios.post(`${API}/movies`, formData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      console.log(formData);
 
-      //console.log(response.data.message);
-      // console.log("Added movie:", response.data.movie);
-
-      // Reset form fields
-      setGenres([]);
-      setoriginal_language("");
-      setOriginalTitle("");
-      setOverview("");
+      dispatch(addnewMovie(formData));
     } catch (error) {
       console.log("Error:", error.message);
     }
@@ -103,11 +73,19 @@ const[status,setstatus]=useState("")
     let generetwo = [...generesOne];
     setGenres(generetwo);
   };
-  console.log(genres);
+  //console.log(genres);
 
   const handleoriginal_language = (e) => {
     setoriginal_language(e.target.value);
   };
+
+  useEffect(() => {
+    dispatch(getallActors());
+    dispatch(getallProducers());
+  }, [dispatch]);
+
+  const allActors = useSelector((state) => state.actor.actors);
+  const allProducers = useSelector((state) => state.producer.producers);
 
   const handleAddActor = () => {
     const newActor = {
@@ -117,7 +95,7 @@ const[status,setstatus]=useState("")
       bio: actorBio,
     };
 
-    setActors([...actors, newActor]);
+    setActors((prevActors) => [...prevActors, newActor]);
 
     // Clear the form inputs
     setActorName("");
@@ -126,287 +104,188 @@ const[status,setstatus]=useState("")
     setActorBio("");
   };
 
-  // const handleSelectedActorChange = (event) => {
-  //   const selectedActorId = event.target.value;
-  //   console.log("selectedActorId",selectedActorId)
-  //   if (selectedActorId) {
-  //     console.log("insidehandleselectactor");
-      
-  //     selectedActor1 = existingActors.find(
-  //       (actor) => actor._id === selectedActorId
-  //     );
-  //     console.log("selectedActor1",selectedActor1)
-      
-  //     setSelectedActor(selectedActor1);
-  //      console.log("selectedActor",selectedActor)
-  //     const newActor = {
-  //       name: selectedActor1?.name,
-  //       gender: selectedActor1?.gender,
-  //       dob: selectedActor1?.dob,
-  //       bio: selectedActor1?.bio,
-  //     };
-  //     console.log("newActor",newActor)
-  //     setActors([...actors, newActor]);
-  //   console.log("actors",actors)
-  //   } else {
-  //     console.log("hello else");
-  //     // Reset the selected actor in the component state
-  //      setSelectedActor({});
-  //   }
-  // };
-  // Define a useEffect hook outside of the component
-// useEffect(() => {
-//   if (selectedActor) {
-//     const newActor = {
-//       name: selectedActor.name,
-//       gender: selectedActor.gender,
-//       dob: selectedActor.dob,
-//       bio: selectedActor.bio,
-//     };
-//     setActors([...actors, newActor]);
-//     console.log("selectedActor", selectedActor);
-//   }
-// }, [selectedActor]);
-
-
-// const handleSelectedActorChange = (event) => {
-//   const selectedActorId = event.target.value;
-//   console.log("selectedActorId", selectedActorId);
-
-//   if (selectedActorId) {
-//     console.log("insidehandleselectactor");
-
-//     const selectedActor1 = existingActors.find(
-//       (actor) => actor._id === selectedActorId
-//     );
-//     console.log("selectedActor1", selectedActor1);
-
-//     setSelectedActor(selectedActor1);
-    
-//   } else {
-//     console.log("hello else");
-//     // Reset the selected actor in the component state
-//     setSelectedActor(null);
-//   }
-// };
-useEffect(() => {
-  if (selectedActor) {
-    const newActor = {
-      name: selectedActor.name,
-      gender: selectedActor.gender,
-      dob: selectedActor.dob,
-      bio: selectedActor.bio,
-    };
-    setActors([...actors, newActor]);
-  }
-}, [selectedActor]);
-
-const handleSelectedActorChange = (event) => {
-  const selectedActorId = event.target.value;
-  if (selectedActorId) {
-    const selectedActor = existingActors.find(
-      (actor) => actor._id === selectedActorId
-    );
-    setSelectedActor(selectedActor);
-  } else {
-    setSelectedActor(null);
-  }
-};
-  let flag = 0;
-
-  
-
-  // useEffect(() => {
-  //   if (selectedProducer) {
-  //     // Set the producer state based on the selected producer's values
-  //     const producerData = {
-  //       name: selectedProducer.name,
-  //       gender: selectedProducer.gender,
-  //       dob: selectedProducer.dob,
-  //       bio: selectedProducer.bio,
-  //     };
-      
-  //     setproducer(producerData);
-  
-  //     console.log("selectedProducer", selectedProducer);
-  //   } else {
-  //     // Reset the producer state when no producer is selected
-  //     setproducer({});
-  //   }
-  // }, [selectedProducer]);
-  
-  // const handleSelectedProducerChange = (event) => {
-  //   const selectedProducerId = event.target.value;
-  //   if (selectedProducerId) {
-  //     const selectedProducer1 = existingproducer.find(
-  //       (producer) => producer._id === selectedProducerId
-  //     );
-  
-  //     setSelectedproducer(selectedProducer1);
-  //   } else {
-  //     setSelectedproducer(null);
-  //   }
-  // };
- 
   useEffect(() => {
-    if (selectedProducer) {
-      const producerDOB = new Date(selectedProducer.dob);
-
-      setProducerName(selectedProducer.name);
-      setProducerGender(selectedProducer.gender);
-      setProducerDOB(producerDOB);
-      setProducerBio(selectedProducer.bio);
-    } else {
-      setProducerName('');
-      setProducerGender('');
-      setProducerDOB('');
-      setProducerBio('');
+    if (selectedActor) {
+      const newActor = {
+        name: selectedActor.name,
+        gender: selectedActor.gender,
+        dob: selectedActor.dob,
+        bio: selectedActor.bio,
+      };
+      setActors((prevActors) => [...prevActors, newActor]);
     }
-    setproducer(selectedProducer)
-  }, [selectedProducer]);
+  }, [selectedActor]);
 
-  const handleExistingProducer = (event) => {
-    const selectedProducerId = event.target.value;
-    if (selectedProducerId) {
-      const selectedProducer = existingproducer.find(
-        (producer) => producer._id === selectedProducerId
+  const handleSelectedActorChange = (event) => {
+    const selectedActorId = event.target.value;
+    if (selectedActorId) {
+      const selectedActor = allActors.find(
+        (actor) => actor._id === selectedActorId
       );
-      setSelectedproducer(selectedProducer);
-      
+      setSelectedActor(selectedActor);
     } else {
-      setSelectedproducer(null);
+      setSelectedActor(null);
     }
   };
+
+  //Producers
+  useEffect(() => {
+    if (selectedProducer) {
+      setProducerName(selectedProducer.name);
+      setProducerGender(selectedProducer.gender);
+      setProducerDOB(selectedProducer.dob);
+      setProducerBio(selectedProducer.bio);
+    } else {
+      setProducerName("");
+      setProducerGender("");
+      setProducerDOB("");
+      setProducerBio("");
+    }
+    setproducer(selectedProducer);
+    console.log("producer", producer);
+  }, [selectedProducer]);
 
   const handleNewProducer = (event) => {
     event.preventDefault();
     if (!producerName || !producerGender || !producerDOB || !producerBio) {
-      alert('Please fill in all the fields for the new producer.');
+      alert("Please fill in all the fields for the new producer.");
       return;
     }
 
-    if (selectedProducer) {
-      alert('Only one producer can be added.');
+    if (producer.length > 0) {
+      alert("Only one producer can be added.");
       return;
     }
 
     const newProducer = {
       name: producerName,
       gender: producerGender,
-      dob: producerDOB.toString(),
+      dob: producerDOB,
       bio: producerBio,
     };
 
-    setSelectedproducer(newProducer);
-    setproducer(selectedProducer)
+    setproducer([newProducer]);
+    console.log([newProducer]);
   };
-console.log("SelectedProducer:",selectedProducer)
-console.log("producer",producer)
-  // const isProducerInputDisabled = selectedProducer
+
+  const handleExistingProducer = (event) => {
+    const selectedProducerId = event.target.value;
+    if (selectedProducerId) {
+      const selectedProducer = allProducers.find(
+        (producer) => producer._id === selectedProducerId
+      );
+      setSelectedproducer(selectedProducer);
+    } else {
+      setSelectedproducer(null);
+    }
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ color: "white", background: "blue" }}
-    >
-      <label htmlFor="genres">Genres:</label>
-      <select
-        id="genres"
-        name="genres"
-        value={genres}
-        onChange={handleGenreChange}
-        required
+    <>
+  <div>
+   
+      <form
+        onSubmit={handleSubmit}
+        style={{ color: "white", background: "blue" }}
       >
-        <option value="">select Genres</option>
-        <option value="adventure">Adventure</option>
-        <option value="family">Family</option>
-        <option value="drama">Drama</option>
-        <option value="comedy">Comedy</option>
-        <option value="fantasy">Fantasy</option>
-      </select>
-      <br />
+        <label htmlFor="genres">Genres:</label>
+        <select
+          id="genres"
+          name="genres"
+          value={genres}
+          onChange={handleGenreChange}
+          required
+        >
+          <option value="">select Genres</option>
+          <option value="adventure">Adventure</option>
+          <option value="family">Family</option>
+          <option value="drama">Drama</option>
+          <option value="comedy">Comedy</option>
+          <option value="fantasy">Fantasy</option>
+        </select>
+        <br />
 
-      <label htmlFor="originalLanguage">Original Language:</label>
-      <select
-        id="language"
-        name="original_language"
-        value={original_language}
-        onChange={handleoriginal_language}
-        required
-      >
-        <option value="en">English</option>
-        <option value="hindi">Hindi</option>
-        <option value="tamil">Tamil</option>
-        <option value="Marathi">Marathi</option>
-        <option value="Fantasy">Fantasy</option>
-      </select>
+        <label htmlFor="originalLanguage">Original Language:</label>
+        <select
+          id="language"
+          name="original_language"
+          value={original_language}
+          onChange={handleoriginal_language}
+          required
+        >
+          <option value="en">English</option>
+          <option value="hindi">Hindi</option>
+          <option value="tamil">Tamil</option>
+          <option value="Marathi">Marathi</option>
+          <option value="Fantasy">Fantasy</option>
+        </select>
 
-      <br />
+        <br />
 
-      <label htmlFor="originalTitle">Original Title:</label>
-      <input
-        type="text"
-        id="originalTitle"
-        name="originalTitle"
-        value={originalTitle}
-        onChange={(e) => setOriginalTitle(e.target.value)}
-        required
-      />
-      <br />
-      <label htmlFor="poster_path">Movie Poster:</label>
-      <input
-        type="text"
-        id="poster_path"
-        name="poster_path"
-        value={poster_path}
-        onChange={(e) => setposter_path(e.target.value)}
-        required
-      />
-      <br />
+        <label htmlFor="originalTitle">Original Title:</label>
+        <input
+          type="text"
+          id="originalTitle"
+          name="originalTitle"
+          value={originalTitle}
+          onChange={(e) => setOriginalTitle(e.target.value)}
+          required
+        />
+        <br />
+        <label htmlFor="poster_path">Movie Poster:</label>
+        <input
+          type="text"
+          id="poster_path"
+          name="poster_path"
+          value={poster_path}
+          onChange={(e) => setposter_path(e.target.value)}
+          required
+        />
+        <br />
 
-      <label htmlFor="overview">Overview:</label>
-      <textarea
-        id="overview"
-        name="overview"
-        value={overview}
-        onChange={(e) => setOverview(e.target.value)}
-        required
-      />
-      <br />
-      <label htmlFor="overview">releaseDate:</label>
-      <input
-        id="releaseDate"
-        name="releaseDate"
-        value={releaseDate}
-        onChange={(e) => setreleaseDate(e.target.value)}
-        required
-      />
-      <br />
-      <label htmlFor="overview">Vote:</label>
-      <input
-        type="number"
-        id="vote_average"
-        name="vote_average"
-        value={vote_average}
-        onChange={(e) => setvote_average(e.target.value)}
-        required
-      />
-      <br />
-      <label htmlFor="status">Status:</label>
-      <input
-        type="text"
-        id="status"
-        name="status"
-        value={status}
-        onChange={(e) => setstatus(e.target.value)}
-        required
-      />
-      <br />
+        <label htmlFor="overview">Overview:</label>
+        <textarea
+          id="overview"
+          name="overview"
+          value={overview}
+          onChange={(e) => setOverview(e.target.value)}
+          required
+        />
+        <br />
+        <label htmlFor="overview">releaseDate:</label>
+        <input
+          id="releaseDate"
+          name="releaseDate"
+          value={releaseDate}
+          onChange={(e) => setreleaseDate(e.target.value)}
+          required
+        />
+        <br />
+        <label htmlFor="overview">Vote:</label>
+        <input
+          type="number"
+          id="vote_average"
+          name="vote_average"
+          value={vote_average}
+          onChange={(e) => setvote_average(e.target.value)}
+          required
+        />
+        <br />
+        <label htmlFor="status">Status:</label>
+        <input
+          type="text"
+          id="status"
+          name="status"
+          value={status}
+          onChange={(e) => setstatus(e.target.value)}
+          required
+        />
+        <br />
 
-      {/* Adding Actors */}
+        {/* Adding Actors */}
 
-      <h3>Add Actors:</h3>
-      {/* <select value={selectedActor} onChange={handleSelectedActorChange}>
+        <h3>Add Actors:</h3>
+        {/* <select value={selectedActor} onChange={handleSelectedActorChange}>
         <option value="">Select Existing Actor</option>
         {existingActors?.map((actor) => {
           return (
@@ -417,123 +296,125 @@ console.log("producer",producer)
         })}
       </select> */}
 
-      <select
-        defaultValue=""
-        value={selectedActor?._id}
-        onChange={(e) => handleSelectedActorChange(e)}
-      >
-        <option value="">Select Actor</option>
-        {existingActors?.map((item) => {
-          return (
-            <option key={item._id} value={item._id}>
-              {item.name}
+        <select
+          defaultValue=""
+          value={selectedActor?._id}
+          onChange={(e) => handleSelectedActorChange(e)}
+        >
+          <option value="">Select Actor</option>
+          {allActors?.map((item) => {
+            return (
+              <option key={item._id} value={item._id}>
+                {item.name}
+              </option>
+            );
+          })}
+        </select>
+
+        <div>
+          <label htmlFor="actorName">Name:</label>
+          <input
+            type="text"
+            id="actorName"
+            value={actorName}
+            onChange={(event) => setActorName(event.target.value)}
+          />
+
+          <label htmlFor="actorGender">Gender:</label>
+          <input
+            type="text"
+            id="actorGender"
+            value={actorGender}
+            onChange={(event) => setActorGender(event.target.value)}
+          />
+
+          <label htmlFor="actorDOB">Date of Birth:</label>
+          <input
+            type="date"
+            id="actorDOB"
+            value={actorDOB}
+            onChange={(event) => setActorDOB(event.target.value)}
+          />
+
+          <label htmlFor="actorBio">Bio:</label>
+          <textarea
+            id="actorBio"
+            value={actorBio}
+            onChange={(event) => setActorBio(event.target.value)}
+          ></textarea>
+        </div>
+
+        <button onClick={handleAddActor}>Add Actor</button>
+
+        <h3>Selected Actors:</h3>
+        <ul>
+          {actors?.map((actor, index) => (
+            <li key={index}>{actor.name}</li>
+          ))}
+        </ul>
+
+        <h3>Add Producer</h3>
+        <select value={selectedProducer?._id} onChange={handleExistingProducer}>
+          <option value="">Select Existing Producer</option>
+          {existingproducer?.map((producer) => (
+            <option key={producer?._id} value={producer?._id}>
+              {producer?.name}
             </option>
-          );
-        })}
-      </select>
+          ))}
+        </select>
 
-      <div>
-        <label htmlFor="actorName">Name:</label>
-        <input
-          type="text"
-          id="actorName"
-          value={actorName}
-          onChange={(event) => setActorName(event.target.value)}
-        />
+        <h3>Or</h3>
+        <h3>Add Producer</h3>
+        <select value={selectedProducer?._id} onChange={handleExistingProducer}>
+          <option value="">Select Existing Producer</option>
+          {allProducers?.map((producer) => (
+            <option key={producer._id} value={producer._id}>
+              {producer.name}
+            </option>
+          ))}
+        </select>
 
-        <label htmlFor="actorGender">Gender:</label>
-        <input
-          type="text"
-          id="actorGender"
-          value={actorGender}
-          onChange={(event) => setActorGender(event.target.value)}
-        />
+        <h3>Or</h3>
 
-        <label htmlFor="actorDOB">Date of Birth:</label>
-        <input
-          type="date"
-          id="actorDOB"
-          value={actorDOB}
-          onChange={(event) => setActorDOB(event.target.value)}
-        />
+        <p>Add New Producer</p>
+        <div>
+          <label htmlFor="producerName">Name:</label>
+          <input
+            type="text"
+            id="producerName"
+            value={producerName}
+            onChange={(event) => setProducerName(event.target.value)}
+          />
 
-        <label htmlFor="actorBio">Bio:</label>
-        <textarea
-          id="actorBio"
-          value={actorBio}
-          onChange={(event) => setActorBio(event.target.value)}
-        ></textarea>
+          <label htmlFor="producerGender">Gender:</label>
+          <input
+            type="text"
+            id="producerGender"
+            value={producerGender}
+            onChange={(event) => setProducerGender(event.target.value)}
+          />
+
+          <label htmlFor="producerDOB">Date of Birth:</label>
+          <input
+            type="text"
+            id="producerDOB"
+            value={producerDOB}
+            onChange={(event) => setProducerDOB(event.target.value)}
+          />
+
+          <label htmlFor="producerBio">Bio:</label>
+          <textarea
+            id="producerBio"
+            value={producerBio}
+            onChange={(event) => setProducerBio(event.target.value)}
+          ></textarea>
+        </div>
+        <button onClick={handleNewProducer}>Add Producer</button>
+
+        <button type="submit">Add Movie</button>
+      </form>
       </div>
-
-      <button onClick={handleAddActor}>Add Actor</button>
-
-      <h3>Selected Actors:</h3>
-      <ul>
-        {actors?.map((actor, index) => (
-          <li key={index}>{actor.name}</li>
-        ))}
-      </ul>
-
-      <h3>Add Producer</h3>
-      <select value={selectedProducer?._id} onChange={handleExistingProducer}>
-        <option value="">Select Existing Producer</option>
-        {existingproducer?.map((producer) => (
-          <option key={producer?._id} value={producer?._id}>
-            {producer?.name}
-          </option>
-        ))}
-      </select>
-
-      <h3>Or</h3>
-      <h3>Add Producer</h3>
-      <select value={selectedProducer?._id} onChange={handleExistingProducer}>
-        <option value="">Select Existing Producer</option>
-        {existingproducer?.map((producer) => (
-          <option key={producer._id} value={producer._id}>
-            {producer.name}
-          </option>
-        ))}
-      </select>
-
-      <h3>Or</h3>
-
-      <p>Add New Producer</p>
-      <div>
-        <label htmlFor="producerName">Name:</label>
-        <input
-          type="text"
-          id="producerName"
-          value={producerName}
-          onChange={(event) => setProducerName(event.target.value)}
-        />
-
-        <label htmlFor="producerGender">Gender:</label>
-        <input
-          type="text"
-          id="producerGender"
-          value={producerGender}
-          onChange={(event) => setProducerGender(event.target.value)}
-        />
-
-        <label htmlFor="producerDOB">Date of Birth:</label>
-        <input
-          type="date"
-          id="producerDOB"
-          value={producerDOB}
-          onChange={(event) => setProducerDOB(event.target.value)}
-        />
-
-        <label htmlFor="producerBio">Bio:</label>
-        <textarea
-          id="producerBio"
-          value={producerBio}
-          onChange={(event) => setProducerBio(event.target.value)}
-        ></textarea>
-      </div>
-      <button onClick={handleNewProducer}>Add Producer</button>
-
-      <button type="submit">Add Movie</button>
-    </form>
+    </>
   );
 };
 

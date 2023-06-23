@@ -2,6 +2,16 @@
     margin: 0;
     padding: 0;
 }
-body{
+/* body{
     background: black;
+} */
+
+.Backbtn{
+    background-color: rgb(234, 174, 21);
+    font-weight: 600;
+    margin: 1rem 2rem;
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
 }

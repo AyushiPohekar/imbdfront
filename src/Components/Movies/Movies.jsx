@@ -36,12 +36,11 @@ const Movies = ({movie,movieId,deletebutton}) => {
     
 
     
-    {/* conditional styling */}
-    {/* <p style={parastyles} className='Movie-summary'>{movies.summary}</p> */}
+    
     {show ? <p className='Movie-summary'>{movie.overview}</p> : null}
     </CardContent>
     <CardActions>
-    {/* <Counter /> {deletebutton} {editbutton} */}
+   
     <div> <span>{deletebutton}</span></div>
     </CardActions>
 

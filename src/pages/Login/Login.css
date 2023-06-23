@@ -1,31 +1,59 @@
-.LoginDiv{
-    background:linear-gradient(to bottom,gray,lightgray);
-    height:100vh;
-    display: flex;
-    flex-direction: column;
+.LoginDiv {
+  background: linear-gradient(to bottom, gray, lightgray);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-.formdiv{
- margin: 2rem auto;
- width:50%;
- height: 50%;
- background-color: white;
- border-radius: 5px;
- padding: 1rem 2rem;
+.formdiv {
+  margin: 2rem auto;
+  width: 40%;
+  height: 50%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  -webkit-box-shadow: 16px 9px 5px -17px rgba(0, 0, 0, 0.54);
+  -moz-box-shadow: 16px 9px 5px -17px rgba(0, 0, 0, 0.54);
+  box-shadow: 16px 9px 5px -17px rgba(0, 0, 0, 0.54);
+  display: flex;
+  justify-content: center;
 }
-.formdiv form{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    
+.formdiv form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 70%;
+  justify-content: space-around;
 }
-.formdiv form div{
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+.formdiv form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
-.formdiv form div label{
-    width: 50%;
-    font-family: sans-serif;
-    color: black;
-    font-weight: 500;
+.formdiv form div label {
+  width: 50%;
+  font-family: sans-serif;
+  color: black;
+  font-weight: 500;
+}
+.formdiv form div input {
+  border: 1px solid grey;
+  padding: 0.7rem;
+  border-radius: 5px;
+}
+.formdiv form button {
+  width: 40%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: rgb(240, 202, 7);
+  border: none;
+  font-size: 0.9rem;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.formdiv form p span {
+  color: blue;
+}
+
+.formdiv form p span:hover {
+  text-decoration: underline;
 }

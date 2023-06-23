@@ -1,0 +1,51 @@
+.actordetailContainer{
+    margin: auto;
+    background: linear-gradient(to right, #232526, #414345);
+
+    width: 75%;
+    border-radius: 5px;
+    height: auto;
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.FieldDiv{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.Field{
+    color: rgb(234, 174, 21);
+    font-weight: 500;
+    font-size: larger;
+}
+.MoviesDivContainer{
+    width: 90%;
+    margin: auto;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+.MoviesDiv{
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    padding-bottom: 2rem;
+}
+.MoviesDiv img{
+    height: 550px;
+    width: 340px;
+    object-fit: cover;
+}
+.MoviesDiv div{
+    color: black;
+    font-size: 18px;
+    font-size: larger;
+    font-weight: 600;
+}

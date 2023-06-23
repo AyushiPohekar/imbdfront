@@ -7,16 +7,10 @@ import { API } from "../../global";
 import axios from "axios";
 
 const Login = () => {
-
   const [auth, setAuth] = useState({
     user: null,
     token: "",
   });
-
-
-
-
-
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -40,15 +34,15 @@ const Login = () => {
     try {
       //console.log("data",{data})
       const res = await axios.post(`${API}/auth/login`, data);
-   
+
       if (res && res.status === 200) {
-       //toast.success(res.data && res.data.message);
+        //toast.success(res.data && res.data.message);
         setAuth({
           ...auth,
           user: res.data.user,
           token: res.data.token,
         });
-        localStorage.setItem('auth',JSON.stringify(res.data))
+        localStorage.setItem("auth", JSON.stringify(res.data));
         // localStorage.setItem(auth,res.data)
         // console.log(typeof(res.data))
         navigate("/");
@@ -78,15 +72,18 @@ const Login = () => {
           <div>
             <label>Password</label>
             <input
-              type="text"
+              type="password"
               placeholder="johndoe@gmail.com"
               name="password"
               value={formData.password}
               onChange={handleOnchange}
             />
           </div>
-
           <button onClick={onSubmitHandler}>Submit</button>
+
+          <p>
+            Don't have an account?Click to <span onClick={()=>navigate("/signup")}>Register</span>
+          </p>
         </form>
       </div>
     </div>
