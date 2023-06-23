@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  addnewMovie,
-  getallActors,
-  getallProducers,
-} from "../../redux/actions";
+
 import { useDispatch, useSelector } from "react-redux";
 import { API } from "../../global";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateMovie = () => {
+
   const dispatch = useDispatch();
   let auth = localStorage.getItem("auth");
   let authuser = JSON.parse(auth);
@@ -76,6 +76,11 @@ const CreateMovie = () => {
   };
 
   const handleAddActor = () => {
+    if (!actorName || !actorGender || !actorDOB || !actorBio) {
+      toast.error("Please fill in all the fields for the new producer.");
+      return;
+    }
+
     const newActor = {
       name: actorName,
       gender: actorGender,
@@ -86,10 +91,10 @@ const CreateMovie = () => {
     setActors((prevActors) => [...prevActors, newActor]);
 
     // Clear the form inputs
-    setActorName("");
-    setActorGender("");
-    setActorDOB("");
-    setActorBio("");
+    // setActorName("");
+    // setActorGender("");
+    // setActorDOB("");
+    // setActorBio("");
   };
 
   useEffect(() => {
@@ -136,12 +141,12 @@ const CreateMovie = () => {
   const handleNewProducer = (event) => {
     event.preventDefault();
     if (!producerName || !producerGender || !producerDOB || !producerBio) {
-      alert("Please fill in all the fields for the new producer.");
+      toast.error("Please fill in all the fields for the new producer.");
       return;
     }
 
     if (producer.length > 0) {
-      alert("Only one producer can be added.");
+      toast.error("Only one producer can be added.");
       return;
     }
 
@@ -203,17 +208,16 @@ const CreateMovie = () => {
         producer,
       };
       console.log("formData", formData);
-      const res = await axios.post(
-        `${API}/movies`,
-        formData ,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      console.log("res.data", res.data.message);
-      //dispatch(addnewMovie(formData));
+      const res = await axios.post(`${API}/movies`, formData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      toast( res.data.message);
+      setTimeout(()=>{
+        navigate("/")
+      },2000)
+      
     } catch (error) {
       console.log("Error:", error.message);
     }
@@ -225,19 +229,26 @@ const CreateMovie = () => {
   //console.log("release",releaseDate)
   //console.log("poster",poster_path)
   //console.log("status",status)
+  const navigate = useNavigate();
   return (
     <>
       <Navbar />
-      <form onSubmit={handleSubmit}>
+      <button className="Backbtn" onClick={() => navigate(-1)}>
+        Back
+      </button>
+      <form onSubmit={handleSubmit} className="formcreate">
         {/* genere */}
 
-        <div>
-          <label htmlFor="genres">Genres:</label>
+        <div className="CreateFielDiv">
+          <label htmlFor="genres" className="CreateField">
+            Genres:
+          </label>
           <select
             id="genres"
             name="genres"
             value={genres}
             onChange={handleGenreChange}
+            className="SelectCreate"
           >
             <option value="">select Genres</option>
             <option value="adventure">Adventure</option>
@@ -249,7 +260,7 @@ const CreateMovie = () => {
         </div>
         <div className="DisplayGenereDiv">
           {genres?.map((item) => {
-            return <>{item}</>;
+            return <div className="generelist">{item}</div>;
           })}
         </div>
 
@@ -257,12 +268,15 @@ const CreateMovie = () => {
 
         {/* OriginalLangauge */}
         <div>
-          <label htmlFor="originalLanguage">Original Language:</label>
+          <label htmlFor="originalLanguage" className="CreateField">
+            Original Language:
+          </label>
           <select
             id="language"
             name="original_language"
             value={original_language}
             onChange={handleoriginal_language}
+            className="SelectCreate"
             required
           >
             <option value="en">English</option>
@@ -273,138 +287,209 @@ const CreateMovie = () => {
         </div>
 
         {/* OriginalTitle */}
-        <label htmlFor="originalTitle">Original Title:</label>
-        <input
-          type="text"
-          id="originalTitle"
-          name="originalTitle"
-          value={originalTitle}
-          onChange={(e) => setOriginalTitle(e.target.value)}
-          required
-        />
+        <div className="CreateFielDiv">
+          <label htmlFor="originalTitle" className="CreateField">
+            Original Title:
+          </label>
+          <input
+            type="text"
+            id="originalTitle"
+            name="originalTitle"
+            value={originalTitle}
+            onChange={(e) => setOriginalTitle(e.target.value)}
+            className="createInput"
+            required
+          />
+        </div>
         <br />
 
         {/* PosterPath */}
-        <label htmlFor="poster_path">Movie Poster:</label>
-        <input
-          type="text"
-          id="poster_path"
-          name="poster_path"
-          value={poster_path}
-          onChange={(e) => setposter_path(e.target.value)}
-          required
-        />
+        <div className="CreateFielDiv">
+          <label htmlFor="poster_path" className="CreateField">
+            Movie Poster:
+          </label>
+          <input
+            type="text"
+            id="poster_path"
+            name="poster_path"
+            value={poster_path}
+            onChange={(e) => setposter_path(e.target.value)}
+            className="createInput"
+            required
+          />
+        </div>
         <br />
 
         {/* Overview */}
-        <label htmlFor="overview">Overview:</label>
-        <textarea
-          id="overview"
-          name="overview"
-          value={overview}
-          onChange={(e) => setOverview(e.target.value)}
-          required
-        />
+        <div className="CreateFielDiv">
+          <label htmlFor="overview" className="CreateField">
+            Overview:
+          </label>
+          <textarea
+            id="overview"
+            name="overview"
+            value={overview}
+            onChange={(e) => setOverview(e.target.value)}
+            className="createInput"
+            required
+          />
+        </div>
         <br />
 
         {/* ReleaseDate */}
-        <label htmlFor="overview">releaseDate:</label>
-        <input
-          id="releaseDate"
-          name="releaseDate"
-          value={releaseDate}
-          onChange={(e) => setreleaseDate(e.target.value)}
-          required
-        />
+        <div className="CreateFielDiv">
+          <label htmlFor="releaseDAte" className="CreateField">
+            releaseDate:
+          </label>
+          <input
+            id="releaseDate"
+            placeholder="01-01-2023"
+            name="releaseDate"
+            value={releaseDate}
+            onChange={(e) => setreleaseDate(e.target.value)}
+            className="createInputDate"
+            required
+          />
+        </div>
         <br />
 
         {/* Vote */}
-        <label htmlFor="overview">Vote:</label>
-        <input
-          type="number"
-          id="vote_average"
-          name="vote_average"
-          value={vote_average}
-          onChange={(e) => setvote_average(e.target.value)}
-          required
-        />
+        <div className="CreateFielDiv">
+          <label htmlFor="overview" className="CreateField">
+            Rating:
+          </label>
+          <input
+            type="number"
+            id="vote_average"
+            name="vote_average"
+            value={vote_average}
+            onChange={(e) => setvote_average(e.target.value)}
+            placeholder="Enter out of 10"
+            className="createInputDate"
+            required
+          />
+        </div>
         <br />
 
         {/* Status */}
-        <label htmlFor="status">Status:</label>
-        <input
+        <label htmlFor="status" className="CreateField">
+          Status:
+        </label>
+        <select
           type="text"
           id="status"
           name="status"
           value={status}
+          className="SelectCreate"
           onChange={(e) => setstatus(e.target.value)}
           required
-        />
+        >
+          <option value="en">Released</option>
+          <option value="hindi">Not Released</option>
+        </select>
         <br />
 
-        <h3>Add Actors:</h3>
+        <h3 className="AddTitle">Add Actors:</h3>
+        <div className="Note">Note:You can add multiple Actors</div>
 
-        <select
-          defaultValue=""
-          value={selectedActor?._id}
-          onChange={(e) => handleSelectedActorChange(e)}
-        >
-          <option value="">Select Actor</option>
-          {existingActors?.map((item) => {
-            return (
-              <option key={item._id} value={item._id}>
-                {item.name}
-              </option>
-            );
-          })}
-        </select>
-
-        <div>
-          <label htmlFor="actorName">Name:</label>
-          <input
-            type="text"
-            id="actorName"
-            value={actorName}
-            onChange={(event) => setActorName(event.target.value)}
-          />
-
-          <label htmlFor="actorGender">Gender:</label>
-          <input
-            type="text"
-            id="actorGender"
-            value={actorGender}
-            onChange={(event) => setActorGender(event.target.value)}
-          />
-
-          <label htmlFor="actorDOB">Date of Birth:</label>
-          <input
-            type="text"
-            id="actorDOB"
-            value={actorDOB}
-            onChange={(event) => setActorDOB(event.target.value)}
-          />
-
-          <label htmlFor="actorBio">Bio:</label>
-          <textarea
-            id="actorBio"
-            value={actorBio}
-            onChange={(event) => setActorBio(event.target.value)}
-          ></textarea>
+        <div className="AddActors">
+          <h4>1.Select from Existing Actors:</h4>
+          <select
+            defaultValue=""
+            value={selectedActor?._id}
+            onChange={(e) => handleSelectedActorChange(e)}
+            className="SelectCreate"
+          >
+            <option value="">Select Actor</option>
+            {existingActors?.map((item) => {
+              return (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
         </div>
+        <div className="note2">Please write all the field to enter new actor.</div>
+        <div className="AddNewActor">
+          <div className="AddNewField">
+            <label htmlFor="actorName" className="CreateFieldNew">
+              Name:
+            </label>
+            <input
+              type="text"
+              id="actorName"
+              value={actorName}
+              onChange={(event) => setActorName(event.target.value)}
+              
+            />
+          </div>
 
-        <button onClick={handleAddActor}>Add Actor</button>
+          <div className="AddNewField">
+            <label htmlFor="actorGender" className="CreateFieldNew">
+              Gender:
+            </label>
+            <input
+              type="text"
+              id="actorGender"
+              value={actorGender}
+              onChange={(event) => setActorGender(event.target.value)}
+             
+            />
+          </div>
+          <div className="AddNewField">
+            <label htmlFor="actorDOB" className="CreateFieldNew">
+              Date of Birth:
+            </label>
+            <input
+              type="text"
+              id="actorDOB"
+              value={actorDOB}
+             
+              onChange={(event) => setActorDOB(event.target.value)}
+            />
+          </div>
 
-        <h3>Selected Actors:</h3>
-        <ul>
+          <div className="AddNewField">
+            <label htmlFor="actorBio" className="CreateFieldNew">
+              Bio:
+            </label>
+            <textarea
+              id="actorBio"
+              value={actorBio}
+              onChange={(event) => setActorBio(event.target.value)}
+             
+            ></textarea>
+          </div>
+        </div>
+        <button onClick={handleAddActor} className="AddnewActor">
+          Add New Actor
+        </button>
+
+        <h3>Selected Actors is Displayed Here</h3>
+
+        <div className="DisplayGenereDiv">
           {actors?.map((actor, index) => (
-            <li key={index}>{actor.name}</li>
+            <li key={index} className="generelist">
+              {actor.name}
+            </li>
           ))}
-        </ul>
+        </div>
 
         {/* Producer */}
 
-        <h3>Add Producer</h3>
-        <select value={selectedProducer?._id} onChange={handleExistingProducer}>
+        <h3 className="AddTitle">Add Producer</h3>
+        <div className="Note">
+          Note:You can select only one producer for a movie
+        </div>
+
+        <h4>1.Select from Existing Producers</h4>
+
+        <select
+          value={selectedProducer?._id}
+          onChange={handleExistingProducer}
+          className="SelectCreate"
+        >
           <option value="">Select Existing Producer</option>
           {existingproducer?.map((producer) => (
             <option key={producer._id} value={producer._id}>
@@ -415,43 +500,58 @@ const CreateMovie = () => {
 
         <h3>Or</h3>
 
-        <p>Add New Producer</p>
-        <div>
-          <label htmlFor="producerName">Name:</label>
-          <input
-            type="text"
-            id="producerName"
-            value={producerName}
-            onChange={(event) => setProducerName(event.target.value)}
-          />
-
-          <label htmlFor="producerGender">Gender:</label>
-          <input
-            type="text"
-            id="producerGender"
-            value={producerGender}
-            onChange={(event) => setProducerGender(event.target.value)}
-          />
-
-          <label htmlFor="producerDOB">Date of Birth:</label>
-          <input
-            type="text"
-            id="producerDOB"
-            value={producerDOB}
-            onChange={(event) => setProducerDOB(event.target.value)}
-          />
-
-          <label htmlFor="producerBio">Bio:</label>
-          <textarea
-            id="producerBio"
-            value={producerBio}
-            onChange={(event) => setProducerBio(event.target.value)}
-          ></textarea>
+        <div className="AddActors">Add New Producer</div>
+        <div className="note2">Please write all the field to enter new actor.</div>
+        <div className="AddNewActor">
+          <div  className="AddNewField">
+            <label htmlFor="producerName" className="CreateField">
+              Name:
+            </label>
+            <input
+              type="text"
+              id="producerName"
+              value={producerName}
+              onChange={(event) => setProducerName(event.target.value)}
+            />
+          </div>
+          <div  className="AddNewField">
+            <label htmlFor="producerGender" className="CreateField">
+              Gender:
+            </label>
+            <input
+              type="text"
+              id="producerGender"
+              value={producerGender}
+              onChange={(event) => setProducerGender(event.target.value)}
+            />
+          </div>
+          <div  className="AddNewField">
+            <label htmlFor="producerDOB" className="CreateField">
+              Date of Birth:
+            </label>
+            <input
+              type="text"
+              id="producerDOB"
+              value={producerDOB}
+              onChange={(event) => setProducerDOB(event.target.value)}
+            />
+          </div>
+          <div  className="AddNewField">
+            <label htmlFor="producerBio" className="CreateField">
+              Bio:
+            </label>
+            <textarea
+              id="producerBio"
+              value={producerBio}
+              onChange={(event) => setProducerBio(event.target.value)}
+            ></textarea>
+          </div>
         </div>
-        <button onClick={handleNewProducer}>Add Producer</button>
+        <button onClick={handleNewProducer}  className="AddnewActor">Add Producer</button>
 
-        <button type="submit">Add Movie</button>
+        <button type="submit" className="AddMovie">Add Movie</button>
       </form>
+      <ToastContainer />
     </>
   );
 };

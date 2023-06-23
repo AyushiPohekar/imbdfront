@@ -1,6 +1,8 @@
 import React from 'react'
 import "./Navbar.css"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
   
@@ -11,7 +13,11 @@ const Navbar = () => {
  
   const handleLogout=()=>{
     localStorage.removeItem("auth");
-    navigate('/login')
+    toast.success("Logout Succesful")
+    setTimeout(()=>{
+      navigate('/login')
+    },2000)
+  
   }
   
   return (
@@ -36,6 +42,7 @@ const Navbar = () => {
           )}
     </div>
     </div>
+    <ToastContainer />
     </div>
     
   )

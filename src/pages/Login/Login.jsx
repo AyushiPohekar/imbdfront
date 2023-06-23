@@ -5,6 +5,8 @@ import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../global";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [auth, setAuth] = useState({
@@ -45,9 +47,13 @@ const Login = () => {
         localStorage.setItem("auth", JSON.stringify(res.data));
         // localStorage.setItem(auth,res.data)
         // console.log(typeof(res.data))
-        navigate("/");
+        toast.success("login Successful")
+        setTimeout(()=>{
+          navigate("/");
+        },3000)
+      
       } else {
-        console.log(res.data.message);
+        toast.error(res.data.message);
       }
     } catch (error) {
       console.log(`Error while calling signupApi`, error.message);
@@ -86,6 +92,7 @@ const Login = () => {
           </p>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

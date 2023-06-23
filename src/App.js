@@ -7,7 +7,6 @@ import HomePage from './pages/HomePage/HomePage';
 
 import MovieDetails from './Components/Movies/MovieDetails';
 import EditMovie from './Components/Movies/EditMovie';
-import AddMovie from './Components/Movies/AddMovie';
 import CreateMovie from './Components/Movies/CreateMovie';
 import ActorDetail from './Components/Actors/ActorDetail';
 import ProducerDetail from './Components/Producers/ProducerDetail';
