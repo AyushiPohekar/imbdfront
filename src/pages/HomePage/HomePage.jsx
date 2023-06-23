@@ -7,8 +7,10 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from "react-router-dom";
+import { useSearch } from "../../Components/Context/SearchContext";
 
 const HomePage = () => {
+  const [query, setQuery]=useSearch();
   const auth=localStorage.getItem("auth")
   const dispatch = useDispatch();
 
@@ -36,7 +38,36 @@ const HomePage = () => {
 
       <div>
         <div className="Movie-list">
-          {allMovies?.map((mv) => (
+        {allMovies?.filter(eq=>{if(query===''){return eq;}
+      else if(eq.original_title.toLowerCase().includes(query.toLowerCase()))
+      {return eq;}
+      })
+      .map((mv) => (
+        <Movies
+          key={mv.movieId}
+          movie={mv}
+          movieId={mv.movieId}
+          deletebutton={
+            <IconButton
+              color="error"
+              onClick={() => handleDelete(mv.movieId)}
+              aria-label="Movie-Delete"
+            >
+              <DeleteIcon />
+            </IconButton>
+          }
+          editbutton={
+            <IconButton
+              color="primary"
+              onClick={() => navigate(`/movies/edit/${mv.movieid}`)}
+              aria-label="Movie-edit"
+            >
+              <EditIcon />
+            </IconButton>
+          }
+        />
+      ))}
+          {/* {allMovies?.map((mv) => (
             <Movies
               key={mv.movieId}
               movie={mv}
@@ -60,7 +91,7 @@ const HomePage = () => {
                 </IconButton>
               }
             />
-          ))}
+          ))} */}
         </div>
       </div>
     </>
