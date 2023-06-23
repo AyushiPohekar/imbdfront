@@ -78,7 +78,7 @@ const CreateMovie = () => {
 
   const handleAddActor = () => {
     if (!actorName || !actorGender || !actorDOB || !actorBio) {
-      toast.error("Please fill in all the fields for the new producer.");
+      toast.error("Please fill in all the fields for the new actor.");
       return;
     }
 
@@ -191,11 +191,8 @@ const CreateMovie = () => {
     e.preventDefault();
 
     try {
-      console.log("typeof", typeof actors);
-      console.log("actors", actors);
-      console.log("ActorKeys", Object.keys(actors));
-      console.log("ObjectValues", Object.values(actors));
-      let actors1 = Object.values(actors);
+     
+     
       const formData = {
         genres,
         original_language: original_language,
@@ -208,7 +205,7 @@ const CreateMovie = () => {
         actors: actors,
         producer,
       };
-      console.log("formData", formData);
+     
       const res = await axios.post(`${API}/movies`, formData, {
         headers: {
           Authorization: token,
@@ -218,9 +215,9 @@ const CreateMovie = () => {
       setTimeout(()=>{
         navigate("/")
       },2000)
-      
+      console.log(res.data)
     } catch (error) {
-      console.log("Error:", error.message);
+      toast.error("Error:", error.message);
     }
   };
 
