@@ -31,6 +31,15 @@ const HomePage = () => {
     }
     
   }
+  const handleEdit=(movieId)=>{
+    if(auth){
+      navigate(`/movies/edit/${movieId}`)
+    }
+    else{
+  navigate("/login")
+    }
+    
+  }
  
   return (
     <>
@@ -59,7 +68,7 @@ const HomePage = () => {
           editbutton={
             <IconButton
               color="primary"
-              onClick={() => navigate(`/movies/edit/${mv.movieId}`)}
+              onClick={() =>handleEdit(mv.movieId)}
               aria-label="Movie-edit"
             >
               <EditIcon />
