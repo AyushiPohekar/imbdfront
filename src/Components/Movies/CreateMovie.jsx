@@ -5,12 +5,11 @@ import { API } from "../../global";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getallActors, getallProducers } from "../../redux/actions";
 
 const CreateMovie = () => {
-
   const dispatch = useDispatch();
   let auth = localStorage.getItem("auth");
   let authuser = JSON.parse(auth);
@@ -52,29 +51,7 @@ const CreateMovie = () => {
   const allActors = useSelector((state) => state.actor.actors);
   const allProducers = useSelector((state) => state.producer.producers);
 
-  // useEffect(() => {
-  //   fetchActors();
-  //   fetchProducers();
-  //   //console.log("inside useEffect")
-  // }, []);
 
-  // const fetchActors = async () => {
-  //   try {
-  //     const response = await axios.get(`${API}/actors`);
-  //     setExistingActors(response?.data?.actors);
-  //   } catch (error) {
-  //     console.log("Error:", error.message);
-  //   }
-  // };
-  // const fetchProducers = async () => {
-  //   try {
-  //     const response = await axios.get(`${API}/producers`);
-  //     setExistingproducer(response?.data?.producers);
-  //     console.log(existingproducer);
-  //   } catch (error) {
-  //     console.log("Error:", error.message);
-  //   }
-  // };
 
   const handleAddActor = () => {
     if (!actorName || !actorGender || !actorDOB || !actorBio) {
@@ -150,7 +127,7 @@ const CreateMovie = () => {
       toast.error("Only one producer can be added.");
       return;
     }
-
+    toast.success("Producer added");
     const newProducer = {
       name: producerName,
       gender: producerGender,
@@ -159,6 +136,7 @@ const CreateMovie = () => {
     };
 
     setproducer([newProducer]);
+
     console.log([newProducer]);
   };
 
@@ -191,8 +169,6 @@ const CreateMovie = () => {
     e.preventDefault();
 
     try {
-     
-     
       const formData = {
         genres,
         original_language: original_language,
@@ -205,17 +181,17 @@ const CreateMovie = () => {
         actors: actors,
         producer,
       };
-     
+
       const res = await axios.post(`${API}/movies`, formData, {
         headers: {
           Authorization: token,
         },
       });
-      toast( res.data.message);
-      setTimeout(()=>{
-        navigate("/")
-      },2000)
-      console.log(res.data)
+      toast(res.data.message);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      console.log(res.data);
     } catch (error) {
       toast.error("Error:", error.message);
     }
@@ -408,7 +384,9 @@ const CreateMovie = () => {
             })}
           </select>
         </div>
-        <div className="note2">Please write all the field to enter new actor.</div>
+        <div className="note2">
+          Please write all the field to enter new actor.
+        </div>
         <div className="AddNewActor">
           <div className="AddNewField">
             <label htmlFor="actorName" className="CreateFieldNew">
@@ -419,7 +397,6 @@ const CreateMovie = () => {
               id="actorName"
               value={actorName}
               onChange={(event) => setActorName(event.target.value)}
-              
             />
           </div>
 
@@ -432,7 +409,6 @@ const CreateMovie = () => {
               id="actorGender"
               value={actorGender}
               onChange={(event) => setActorGender(event.target.value)}
-             
             />
           </div>
           <div className="AddNewField">
@@ -443,7 +419,6 @@ const CreateMovie = () => {
               type="text"
               id="actorDOB"
               value={actorDOB}
-             
               onChange={(event) => setActorDOB(event.target.value)}
             />
           </div>
@@ -456,7 +431,6 @@ const CreateMovie = () => {
               id="actorBio"
               value={actorBio}
               onChange={(event) => setActorBio(event.target.value)}
-             
             ></textarea>
           </div>
         </div>
@@ -499,9 +473,11 @@ const CreateMovie = () => {
         <h3>Or</h3>
 
         <div className="AddActors">Add New Producer</div>
-        <div className="note2">Please write all the field to enter new actor.</div>
+        <div className="note2">
+          Please write all the field to enter new actor.
+        </div>
         <div className="AddNewActor">
-          <div  className="AddNewField">
+          <div className="AddNewField">
             <label htmlFor="producerName" className="CreateField">
               Name:
             </label>
@@ -512,7 +488,7 @@ const CreateMovie = () => {
               onChange={(event) => setProducerName(event.target.value)}
             />
           </div>
-          <div  className="AddNewField">
+          <div className="AddNewField">
             <label htmlFor="producerGender" className="CreateField">
               Gender:
             </label>
@@ -523,7 +499,7 @@ const CreateMovie = () => {
               onChange={(event) => setProducerGender(event.target.value)}
             />
           </div>
-          <div  className="AddNewField">
+          <div className="AddNewField">
             <label htmlFor="producerDOB" className="CreateField">
               Date of Birth:
             </label>
@@ -534,7 +510,7 @@ const CreateMovie = () => {
               onChange={(event) => setProducerDOB(event.target.value)}
             />
           </div>
-          <div  className="AddNewField">
+          <div className="AddNewField">
             <label htmlFor="producerBio" className="CreateField">
               Bio:
             </label>
@@ -545,11 +521,14 @@ const CreateMovie = () => {
             ></textarea>
           </div>
         </div>
-       
-        <button onClick={handleNewProducer}  className="AddnewActor">Add Producer</button>
-        
 
-        <button type="submit" className="AddMovie">Add Movie</button>
+        <button onClick={handleNewProducer} className="AddnewActor">
+          Add Producer
+        </button>
+
+        <button type="submit" className="AddMovie">
+          Add Movie
+        </button>
       </form>
       <ToastContainer />
     </>

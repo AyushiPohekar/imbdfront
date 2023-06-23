@@ -59,7 +59,7 @@ const HomePage = () => {
           editbutton={
             <IconButton
               color="primary"
-              onClick={() => navigate(`/movies/edit/${mv.movieid}`)}
+              onClick={() => navigate(`/movies/edit/${mv.movieId}`)}
               aria-label="Movie-edit"
             >
               <EditIcon />

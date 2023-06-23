@@ -6,7 +6,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./Movies.css";
 
-const Movies = ({ movie, movieId, deletebutton }) => {
+const Movies = ({ movie, movieId, deletebutton,editbutton }) => {
   //console.log(movieId)
   const [show, setShow] = useState(false);
 
@@ -52,7 +52,7 @@ const Movies = ({ movie, movieId, deletebutton }) => {
       <CardActions>
         <div>
           {" "}
-          <span>{deletebutton}</span>
+          <span>{deletebutton} {editbutton}</span>
         </div>
       </CardActions>
     </Card>

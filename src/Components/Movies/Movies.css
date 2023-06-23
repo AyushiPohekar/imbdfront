@@ -177,6 +177,9 @@
   font-weight: 500;
   cursor: pointer;
 }
+.AddnewActor:hover{
+  background-color: rgb(239, 201, 131);
+}
 .AddMovie{
   background-color: green;
   width: 50%;
@@ -187,6 +190,9 @@
   font-weight: 600;
   color: #ffffff;
   cursor: pointer;
+}
+.AddMovie:hover{
+  background-color: yellowgreen;
 }
 .note2{
   width: max-content;
