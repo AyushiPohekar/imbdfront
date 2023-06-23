@@ -7,6 +7,7 @@ import Navbar from "../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getallActors, getallProducers } from "../../redux/actions";
 
 const CreateMovie = () => {
 
@@ -44,36 +45,36 @@ const CreateMovie = () => {
 
   //console.log("afterintializing",actors)
   //console.log("typeof",typeof(actors))
-  // useEffect(() => {
-  //   dispatch(getallActors);
-  //   dispatch(getallProducers);
-  // }, []);
-  // const allActors = useSelector((state) => state.actor.actors);
-  // const allProducers = useSelector((state) => state.producer.producers);
-
   useEffect(() => {
-    fetchActors();
-    fetchProducers();
-    //console.log("inside useEffect")
+    dispatch(getallActors);
+    dispatch(getallProducers);
   }, []);
+  const allActors = useSelector((state) => state.actor.actors);
+  const allProducers = useSelector((state) => state.producer.producers);
 
-  const fetchActors = async () => {
-    try {
-      const response = await axios.get(`${API}/actors`);
-      setExistingActors(response?.data?.actors);
-    } catch (error) {
-      console.log("Error:", error.message);
-    }
-  };
-  const fetchProducers = async () => {
-    try {
-      const response = await axios.get(`${API}/producers`);
-      setExistingproducer(response?.data?.producers);
-      console.log(existingproducer);
-    } catch (error) {
-      console.log("Error:", error.message);
-    }
-  };
+  // useEffect(() => {
+  //   fetchActors();
+  //   fetchProducers();
+  //   //console.log("inside useEffect")
+  // }, []);
+
+  // const fetchActors = async () => {
+  //   try {
+  //     const response = await axios.get(`${API}/actors`);
+  //     setExistingActors(response?.data?.actors);
+  //   } catch (error) {
+  //     console.log("Error:", error.message);
+  //   }
+  // };
+  // const fetchProducers = async () => {
+  //   try {
+  //     const response = await axios.get(`${API}/producers`);
+  //     setExistingproducer(response?.data?.producers);
+  //     console.log(existingproducer);
+  //   } catch (error) {
+  //     console.log("Error:", error.message);
+  //   }
+  // };
 
   const handleAddActor = () => {
     if (!actorName || !actorGender || !actorDOB || !actorBio) {
@@ -112,7 +113,7 @@ const CreateMovie = () => {
   const handleSelectedActorChange = (event) => {
     const selectedActorId = event.target.value;
     if (selectedActorId) {
-      const selectedActor = existingActors.find(
+      const selectedActor = allActors.find(
         (actor) => actor._id === selectedActorId
       );
       setSelectedActor(selectedActor);
@@ -164,7 +165,7 @@ const CreateMovie = () => {
   const handleExistingProducer = (event) => {
     const selectedProducerId = event.target.value;
     if (selectedProducerId) {
-      const selectedProducer = existingproducer.find(
+      const selectedProducer = allProducers.find(
         (producer) => producer._id === selectedProducerId
       );
       setSelectedproducer(selectedProducer);
@@ -401,7 +402,7 @@ const CreateMovie = () => {
             className="SelectCreate"
           >
             <option value="">Select Actor</option>
-            {existingActors?.map((item) => {
+            {allActors?.map((item) => {
               return (
                 <option key={item._id} value={item._id}>
                   {item.name}
@@ -491,7 +492,7 @@ const CreateMovie = () => {
           className="SelectCreate"
         >
           <option value="">Select Existing Producer</option>
-          {existingproducer?.map((producer) => (
+          {allProducers?.map((producer) => (
             <option key={producer._id} value={producer._id}>
               {producer.name}
             </option>
@@ -547,7 +548,9 @@ const CreateMovie = () => {
             ></textarea>
           </div>
         </div>
+       
         <button onClick={handleNewProducer}  className="AddnewActor">Add Producer</button>
+        
 
         <button type="submit" className="AddMovie">Add Movie</button>
       </form>

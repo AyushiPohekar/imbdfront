@@ -11,12 +11,9 @@ export const moviesReducer = (state = [], action) => {
         ...state,
         selectedMovie,
       };
-      case actionTypes.CREATE_MOVIE:
-        return [action.payload, ...state]
-    // case actionTypes.UPDATE_TODO:
-    // return state.map(todo => (
-    //     todo._id === action.payload._id ? { ...todo, data: action.payload.data } : todo
-    // ))
+    case actionTypes.CREATE_MOVIE:
+      return [action.payload, ...state];
+
     case actionTypes.DELETE_MOVIE:
       const movieId = action.payload.movieId;
 
